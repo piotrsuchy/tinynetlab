@@ -23,6 +23,4 @@ RUN chown -R frr:frr /etc/frr /var/run/frr
 # Simple init manager for reaping processes and forwarding signals
 ENTRYPOINT ["/usr/bin/tini", "--"]
 
-# Default CMD starts watchfrr
-COPY docker-start /usr/lib/frr/docker-start
-CMD ["/usr/lib/frr/docker-start"]
+CMD /bin/bash

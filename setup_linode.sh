@@ -1,20 +1,27 @@
 #!/bin/bash
 
-$INSTALLATION_TYPE=$1
+LAB_TYPE=$1 
 
 # git + docker installation
 sudo apt update && sudo apt install -y git
-sudo ./docker_setup.sh
+sudo ./setup/setup_docker.sh
 
-if [ $INSTALLATION_TYPE=="FRR" ]; then
+if [ "$LAB_TYPE" == "FRR" ]; then
+    echo "-------------------------"
     echo "One-host FRR installation"
-    git clone https://github.com/FRRouting/frr.git
-    cd frr
-    docker build -t frr-debian:11 -f docker/debian/Dockerfile .
-    docker run --privileged --init --name frr-deb -itd frr-debian-11 bash
-	docker exec -it frr-deb git clone https://github.com/piotrsuchy/frr && bash
-else
+    echo "-------------------------"
+    cd docker/frrready
+    docker build -t frr:debian-11 -f Dockerfile .
+    docker run --privileged --init --name frr -itd frr:debian-11 bash
+    docker exec frr apt update 
+    docker exec frr apt install -y git
+    docker exec frr git clone https://github.com/piotrsuchy/frr
+elif [ "$LAB_TYPE" == "CONTAINERLAB_FRR" ]; then
+    echo "----------------------------------------------------"
     echo "Full installation of containerlab and basic topology"
+    echo "----------------------------------------------------"
     bash -c "$(curl -sL https://get.containerlab.dev)"
-    # containerlab create -t 3-tier-topology.yaml
+    ./topos/frr01/start.sh
+else 
+    echo "Specify installation type, either: 'FRR' or 'CONTAINERLAB_FRR'"
 fi
