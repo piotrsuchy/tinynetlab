@@ -1,4 +1,12 @@
-# Tinynetlab - WIP
+# Tinynetlab
 
-Some experiments with spinning up simple network topologies using docker, containerlab and FRR for routing.
+## WIP
+
+## General Idea
+
+Some scripts and images that help with learning simple network topologies. Uses docker and containerlab mostly.
 Use setup scripts for faster bring-up.
+
+Docker registry:
+https://hub.docker.com/r/piotrsuchydocker/tinynetlab/tags
+
