@@ -84,23 +84,25 @@ RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y \
 RUN if [ "$FRR_VERSION" = "8" ]; then \
 	LIBYANG_VERSION="2.1.80"; \
 	FRR_POOL_VERSION="8"; \
+	DEB_VERSION="1"; \
     else \
 	LIBYANG_VERSION="2.1.128"; \
 	FRR_POOL_VERSION="9"; \
+	DEB_VERSION="2"; \
     fi && \
-    wget https://deb.frrouting.org/frr/pool/frr-${FRR_POOL_VERSION}/liby/libyang2/libyang-tools_${LIBYANG_VERSION}-2~deb11u1_all.deb \
-    && wget https://deb.frrouting.org/frr/pool/frr-${FRR_POOL_VERSION}/liby/libyang2/libyang2-dev_${LIBYANG_VERSION}-2~deb11u1_amd64.deb \
-    && wget https://deb.frrouting.org/frr/pool/frr-${FRR_POOL_VERSION}/liby/libyang2/libyang2-tools_${LIBYANG_VERSION}-2~deb11u1_amd64.deb \
-    && wget https://deb.frrouting.org/frr/pool/frr-${FRR_POOL_VERSION}/liby/libyang2/libyang2_${LIBYANG_VERSION}-2~deb11u1_amd64.deb \
+    wget https://deb.frrouting.org/frr/pool/frr-${FRR_POOL_VERSION}/liby/libyang2/libyang-tools_${LIBYANG_VERSION}-${DEB_VERSION}~deb11u1_all.deb \
+    && wget https://deb.frrouting.org/frr/pool/frr-${FRR_POOL_VERSION}/liby/libyang2/libyang2-dev_${LIBYANG_VERSION}-${DEB_VERSION}~deb11u1_amd64.deb \
+    && wget https://deb.frrouting.org/frr/pool/frr-${FRR_POOL_VERSION}/liby/libyang2/libyang2-tools_${LIBYANG_VERSION}-${DEB_VERSION}~deb11u1_amd64.deb \
+    && wget https://deb.frrouting.org/frr/pool/frr-${FRR_POOL_VERSION}/liby/libyang2/libyang2_${LIBYANG_VERSION}-${DEB_VERSION}~deb11u1_amd64.deb \
     && wget https://deb.frrouting.org/frr/pool/frr-${FRR_POOL_VERSION}/libr/librtr0/librtr-dbg_0.8.0~deb11u1_amd64.deb \
     && wget https://deb.frrouting.org/frr/pool/frr-${FRR_POOL_VERSION}/libr/librtr0/librtr-dev_0.8.0~deb11u1_amd64.deb \
     && wget https://deb.frrouting.org/frr/pool/frr-${FRR_POOL_VERSION}/libr/librtr0/librtr0_0.8.0~deb11u1_amd64.deb \
     && wget https://deb.frrouting.org/frr/pool/frr-${FRR_POOL_VERSION}/libr/librtr0/rtr-tools-dbg_0.8.0~deb11u1_amd64.deb \
     && wget https://deb.frrouting.org/frr/pool/frr-${FRR_POOL_VERSION}/libr/librtr0/rtr-tools_0.8.0~deb11u1_amd64.deb \
-    && dpkg -i libyang2_${LIBYANG_VERSION}-2~deb11u1_amd64.deb \
-    && dpkg -i libyang2-tools_${LIBYANG_VERSION}-2~deb11u1_amd64.deb \
-    && dpkg -i libyang-tools_${LIBYANG_VERSION}-2~deb11u1_all.deb \
-    && dpkg -i libyang2-dev_${LIBYANG_VERSION}-2~deb11u1_amd64.deb \
+    && dpkg -i libyang2_${LIBYANG_VERSION}-${DEB_VERSION}~deb11u1_amd64.deb \
+    && dpkg -i libyang2-tools_${LIBYANG_VERSION}-${DEB_VERSION}~deb11u1_amd64.deb \
+    && dpkg -i libyang-tools_${LIBYANG_VERSION}-${DEB_VERSION}~deb11u1_all.deb \
+    && dpkg -i libyang2-dev_${LIBYANG_VERSION}-${DEB_VERSION}~deb11u1_amd64.deb \
     && dpkg -i librtr0_0.8.0~deb11u1_amd64.deb \
     && dpkg -i librtr-dbg_0.8.0~deb11u1_amd64.deb \
     && dpkg -i librtr-dev_0.8.0~deb11u1_amd64.deb \
