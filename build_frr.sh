@@ -40,8 +40,8 @@ fi
 echo "Building FRR .deb package..."
 if docker exec ${CONTAINER} /bin/bash -c "cd frr && dpkg-buildpackage -b -rfakeroot --no-sign -Ppkg.frr.nortrlib,pkg.frr.nolua"; then
     echo ".deb package built successfully."
-    docker exec ${CONTAINER} mkdir -p debs
-    docker exec ${CONTAINER} mv /root/*.deb debs
+    docker exec ${CONTAINER} bash -c 'mkdir -p debs'
+    docker exec ${CONTAINER} bash -c 'mv /root/*.deb debs'
     docker cp ${CONTAINER}:/root/debs .
 else
     echo "Failed to build .deb package."
