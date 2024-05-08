@@ -17,6 +17,8 @@ if ! docker images ${IMAGE_NAME} | grep -q ${IMAGE_NAME}; then
             echo "Failed to build the image."
             exit 1
         fi
+    else
+	echo "Pull successful"
     fi
 fi
 
@@ -26,7 +28,9 @@ docker rm ${CONTAINER}
 echo "Checking if the container ${CONTAINER} is running..."
 if ! docker ps | grep -q ${CONTAINER}; then
     echo "Container frrbuild is not running. Starting container..."
-    docker run -itd --init --privileged --name ${CONTAINER} ${IMAGE_NAME}
+    docker run --init --privileged -itd --name ${CONTAINER} ${IMAGE_NAME}
+else
+    echo "Docker container ${CONTAINER} is running properly"
 fi
 
 echo "Cloning the repo into the container on branch ${BRANCH}..."
