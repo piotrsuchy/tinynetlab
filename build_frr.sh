@@ -6,6 +6,7 @@ BRANCH=$1
 FRR_VERSION=$2
 CONTAINER=frrbuild
 IMAGE_NAME="piotrsuchydocker/tinynetlab:frrbuild-${FRR_VERSION}-debian-11"
+REPO="https://github.com/piotrsuchy/frr.git"
 
 echo "Checking if docker image ${IMAGE_NAME} is running..."
 if ! docker images ${IMAGE_NAME} | grep -q ${IMAGE_NAME}; then
@@ -34,7 +35,7 @@ else
 fi
 
 echo "Cloning the repo into the container on branch ${BRANCH}..."
-if docker exec ${CONTAINER} git clone -b ${BRANCH} https://github.com/piotrsuchy/frr.git; then
+if docker exec ${CONTAINER} git clone -b ${BRANCH} ${REPO}; then
     echo "Repository cloned successfully."
 else
     echo "Failed to clone repository."
