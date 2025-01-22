@@ -5,8 +5,8 @@
 docker network create --subnet=192.168.10.0/24 --driver bridge bridge_1
 
 # create two containers, both in the same network
-docker run -itd --init --privileged --network bridge_1 --hostname host1 --name host1 piotrsuchy/tinynetlab:frrtopotests-debian-11 bash
-docker run -itd --init --privileged --network bridge_1 --hostname host2 --name host2 piotrsuchy/tinynetlab:frrtopotests-debian-11 bash
+docker run -itd --init --privileged --network bridge_1 --hostname host1 --name host1 piotrsuchydocker/tinynetlab:frrtopotests-debian-11 bash
+docker run -itd --init --privileged --network bridge_1 --hostname host2 --name host2 piotrsuchydocker/tinynetlab:frrtopotests-debian-11 bash
 
 # adding debug file for both hosts
 docker exec host1 bash -c 'touch /frr.log && chmod 777 /frr.log'
@@ -24,6 +24,11 @@ docker exec host2 bash -c 'ip route add 10.40.0.1 via 192.168.10.3 dev eth0'
 docker exec host2 bash -c 'for i in {1..255}; do ip route add 172.168.1.${i} dev lo; done'
 
 # install some frr version on those two containers 
+wget https://deb.frrouting.org/frr/pool/frr-10.1/f/frr/frr_10.1.2-0~deb11u1_amd64.deb
+wget https://deb.frrouting.org/frr/pool/frr-10.1/f/frr/frr-pythontools_10.1.2-0~deb11u1_all.deb
+mv frr_10.1.2-0~deb11u1_amd64.deb frr.deb
+mv frr-pythontools_10.1.2-0~deb11u1_all.deb frr-pythontools.deb
+
 docker cp frr.deb host1:/
 docker cp frr-pythontools.deb host1:/
 docker cp frr.deb host2:/
