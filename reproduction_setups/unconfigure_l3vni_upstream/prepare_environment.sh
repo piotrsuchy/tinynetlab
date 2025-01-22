@@ -24,17 +24,21 @@ docker exec host2 bash -c 'ip route add 10.40.0.1 via 192.168.10.3 dev eth0'
 docker exec host2 bash -c 'for i in {1..255}; do ip route add 172.168.1.${i} dev lo; done'
 
 # install some frr version on those two containers 
+wget https://deb.frrouting.org/frr/pool/frr-10/liby/libyang2/libyang2_2.1.128-2~deb11u1_amd64.deb
 wget https://deb.frrouting.org/frr/pool/frr-10.1/f/frr/frr_10.1.2-0~deb11u1_amd64.deb
 wget https://deb.frrouting.org/frr/pool/frr-10.1/f/frr/frr-pythontools_10.1.2-0~deb11u1_all.deb
 mv frr_10.1.2-0~deb11u1_amd64.deb frr.deb
 mv frr-pythontools_10.1.2-0~deb11u1_all.deb frr-pythontools.deb
 
+docker cp libyang2_2.1.128-2~deb11u1_amd64.deb host1:/
 docker cp frr.deb host1:/
 docker cp frr-pythontools.deb host1:/
 docker cp frr.deb host2:/
 docker cp frr-pythontools.deb host2:/
 
 # install frr from a deb file
+docker exec host1 bash -c 'dpkg --force-confold -i /libyang2_2.1.128-2~deb11u1_amd64.deb'
+docker exec host2 bash -c 'dpkg --force-confold -i /libyang2_2.1.128-2~deb11u1_amd64.deb'
 docker exec host1 bash -c 'dpkg --force-confold -i /frr.deb'
 docker exec host1 bash -c 'dpkg --force-confold -i /frr-pythontools.deb'
 docker exec host2 bash -c 'dpkg --force-confold -i /frr.deb'
