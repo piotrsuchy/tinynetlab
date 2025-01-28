@@ -45,7 +45,8 @@ docker exec host2 bash -c 'dpkg --force-confold -i /frr.deb'
 docker exec host2 bash -c 'dpkg --force-confold -i /frr-pythontools.deb'
 
 # HOST1: setup frr configuration and copy scripts
-docker cp frr-vrf-host1.conf host1:/etc/frr/frr-vrf.conf
+docker cp frr-vrf-host1-part1.conf host1:/etc/frr/frr-vrf-host1-part1.conf
+docker cp frr-vrf-host1-part2.conf host1:/etc/frr/frr-vrf-host1-part2.conf
 docker cp frr-no-vrf-host1.conf host1:/etc/frr/frr-no-vrf.conf
 docker cp setup_vrf.sh host1:/
 docker cp teardown_vrf.sh host1:/
@@ -61,9 +62,16 @@ docker exec host2 sed -i '/bgpd=no/c\bgpd=yes' /etc/frr/daemons
 # both hosts - restart frr after new install
 docker exec host1 /etc/init.d/frr restart
 docker exec host2 /etc/init.d/frr restart
+sleep 3
 
+echo "Setup completed. Now running setup_vrf.sh and teardown_vrf.sh just one time on host1 to provoke the bug. The bug being not able to reload, because there is a lingering 'l3vni'"
 docker exec host1 bash -c '/setup_vrf.sh'
-docker exec host2 bash -c '/usr/lib/frr/frr-reload.py --debug --reload /etc/frr/frr.conf'
 
-echo "Setup completed. Now runnig loop.sh - looping setup_vrf.sh and teardown_vrf.sh X times on host1 to provoke the bug."
-docker exec host1 bash -c '/loop.sh'
+# if you are intrested in debug
+# docker exec host1 bash -c 'vtysh -c "show evpn vni"'
+# docker exec host1 bash -c 'vtysh -c "show bgp l2vpn evpn vni"'
+docker exec host1 bash -c '/teardown_vrf.sh'
+
+# if you are intrested in debug
+# docker exec host1 bash -c 'vtysh -c "show evpn vni"'
+# docker exec host1 bash -c 'vtysh -c "show bgp l2vpn evpn vni"'
